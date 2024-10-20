@@ -1,41 +1,66 @@
-import { View, StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons'
+import { StyleSheet, View } from 'react-native'
 import Animated, {
+  interpolate,
   useAnimatedStyle,
   useSharedValue,
-  withRepeat, withSequence,
-  withSpring, withTiming
-} from 'react-native-reanimated';
-import { useEffect } from 'react';
-import Ionicons from '@expo/vector-icons/Ionicons'
+  withDelay,
+  withRepeat,
+  withSequence,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated'
 
-const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
+import { useMount } from '@/hooks/useMount'
+
+const AnimatedIcon = Animated.createAnimatedComponent(Ionicons)
 
 export default function TabThreeScreen() {
-  const translateY = useSharedValue(0);
+  const sv = useSharedValue(0)
 
-  const animatedStyles = useAnimatedStyle(() => ({
-    transform: [{translateY: translateY.value}]
-  }));
-
-  useEffect(() => {
-    translateY.value = withRepeat(
+  useMount(() => {
+    // TODO respect reduced motion setting
+    sv.value = withRepeat(
       withSequence(
-        withTiming(-40, { duration: 1000 }),
-        withSpring(0, { mass: 0.2, damping: 2.5, stiffness: 55 })
-      ), -1, true);
-  }, []);
+        withTiming(1, { duration: 1000 }),
+        withSpring(0, { mass: 0.2, damping: 2.5, stiffness: 55 }),
+        withDelay(900, withTiming(0))
+      ),
+      -1,
+      true
+    )
+  })
+
+  const iconStyles = useAnimatedStyle(() => ({
+    transform: [{ translateY: interpolate(sv.value, [0, 1], [0, -25]) }],
+  }))
+
+  const shadowStyles = useAnimatedStyle(() => ({
+    transform: [
+      { scaleX: 2 },
+      { scale: interpolate(sv.value, [0, 1], [1, 0.6]) },
+    ],
+  }))
 
   return (
-    <View style={styles.container}>
+    <View style={styles.layout}>
       <View style={styles.square}>
-        <AnimatedIcon name="location-sharp" size={80} color="#087EA4" style={animatedStyles} />
+        <View style={styles.animationCanvas}>
+          <AnimatedIcon
+            name="location-sharp"
+            size={80}
+            color="#087EA4"
+            style={[styles.icon, iconStyles]}
+          />
+          <Animated.View style={[styles.shadow, shadowStyles]} />
+        </View>
       </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
+  layout: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -43,15 +68,29 @@ const styles = StyleSheet.create({
   square: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 200,
-    height: 200,
+    width: 225,
+    height: 225,
     backgroundColor: '#1D3D47',
-    borderRadius: 5,
+    borderRadius: 10,
+    transform: [{ rotate: '45deg' }],
+  },
+  animationCanvas: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    transform: [{ rotate: '-45deg' }],
   },
   icon: {
-    width: 20,
-    height: 20,
-    backgroundColor: '',
-    borderRadius: 10,
-  }
+    zIndex: 2,
+    elevation: 2,
+  },
+  shadow: {
+    width: 14,
+    height: 14,
+    backgroundColor: '#142a31',
+    opacity: 0.6,
+    borderRadius: 18,
+    marginTop: -8,
+    zIndex: 1,
+    elevation: 1,
+  },
 })
