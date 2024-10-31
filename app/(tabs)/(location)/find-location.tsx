@@ -14,33 +14,39 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
+import { useLocationDispatch } from '@/context/LocationContext'
 import { useMount } from '@/hooks/useMount'
 
-const AnimatedIcon = Animated.createAnimatedComponent(Ionicons)
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
 
 const useFindLocation = () => {
+  const { success, rejected } = useLocationDispatch()
+
   useEffect(() => {
     ;(async () => {
       const { status } = await Location.requestForegroundPermissionsAsync()
 
       if (status !== 'granted') {
-        router.navigate({
-          pathname: '/',
-          params: {
-            error: 'Permission to access location was denied',
-          },
-        })
+        rejected('Permission to access location was denied')
+        router.navigate('/')
 
         return
       }
 
+      await sleep(10000) // TODO debug code
       const location = await Location.getCurrentPositionAsync({})
-      console.log(location)
+
+      success(location)
+      router.navigate('/display-location')
     })()
-  }, [])
+  }, [rejected, success])
 }
 
-export default function LocationScreen() {
+const AnimatedIcon = Animated.createAnimatedComponent(Ionicons)
+
+export default function FindLocationScreen() {
   useFindLocation()
 
   const progress = useSharedValue(0)
