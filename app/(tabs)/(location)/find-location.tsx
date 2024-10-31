@@ -1,4 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
+import * as Location from 'expo-location'
+import { router } from 'expo-router'
+import { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Animated, {
   interpolate,
@@ -15,7 +18,31 @@ import { useMount } from '@/hooks/useMount'
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons)
 
+const useFindLocation = () => {
+  useEffect(() => {
+    ;(async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync()
+
+      if (status !== 'granted') {
+        router.navigate({
+          pathname: '/',
+          params: {
+            error: 'Permission to access location was denied',
+          },
+        })
+
+        return
+      }
+
+      const location = await Location.getCurrentPositionAsync({})
+      console.log(location)
+    })()
+  }, [])
+}
+
 export default function LocationScreen() {
+  useFindLocation()
+
   const progress = useSharedValue(0)
 
   useMount(() => {

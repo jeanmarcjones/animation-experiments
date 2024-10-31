@@ -1,7 +1,9 @@
-import { Link } from 'expo-router'
+import { Link, useLocalSearchParams } from 'expo-router'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 
 export default function Home() {
+  const { error } = useLocalSearchParams<{ error?: string }>()
+
   return (
     <View style={styles.layout}>
       <Link href="/find-location" asChild>
@@ -9,6 +11,8 @@ export default function Home() {
           <Text style={styles.buttonText}>Find Location</Text>
         </Pressable>
       </Link>
+
+      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   )
 }
@@ -26,5 +30,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#EEEEEE',
-  }
+  },
+  errorText: {
+    color: '#D13415',
+    marginTop: 20,
+  },
 })
