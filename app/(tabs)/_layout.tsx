@@ -18,22 +18,22 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'Location',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-              name={focused ? 'home' : 'home-outline'}
+              name={focused ? 'location' : 'location-outline'}
               color={color}
             />
           ),
         }}
       />
       <Tabs.Screen
-        name="location"
+        name="playground"
         options={{
-          title: 'Location',
+          title: 'Playground',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
-              name={focused ? 'location' : 'location-outline'}
+              name={focused ? 'balloon' : 'balloon-outline'}
               color={color}
             />
           ),
