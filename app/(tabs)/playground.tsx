@@ -9,7 +9,7 @@ import {
 import { Dimensions, StyleSheet } from 'react-native'
 import { useSharedValue, withRepeat, withTiming } from 'react-native-reanimated'
 
-import { useMount } from '@/hooks/useMount';
+import { useMount } from '@/hooks/useMount'
 
 const angryPath = Skia.Path.MakeFromSVGString(
   'M 16 25 C 32 27 43 28 49 28 C 54 28 62 28 73 26 C 66 54 60 70 55 74 C 51 77 40 75 27 55 C 25 50 21 40 27 55 Z'
