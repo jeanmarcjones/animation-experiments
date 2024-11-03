@@ -1,18 +1,15 @@
-import { Link, type LinkProps } from 'expo-router'
 import { type ReactNode } from 'react'
-import { Pressable, StyleSheet, Text } from 'react-native'
+import { Pressable, type PressableProps, StyleSheet, Text } from 'react-native'
 
-interface Props extends LinkProps<any> {
+interface Props extends Omit<PressableProps, 'children'> {
   children: ReactNode
 }
 
-export default function Button({ href, onPress, children }: Props) {
+export default function Button({ children, ...rest }: Props) {
   return (
-    <Link href={href} asChild onPress={onPress}>
-      <Pressable style={styles.button}>
-        <Text style={styles.buttonText}>{children}</Text>
-      </Pressable>
-    </Link>
+    <Pressable style={styles.button} {...rest}>
+      <Text style={styles.buttonText}>{children}</Text>
+    </Pressable>
   )
 }
 
@@ -23,6 +20,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
     color: '#EEEEEE',
   },
 })

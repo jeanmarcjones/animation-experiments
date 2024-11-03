@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native'
 
-import Button from '@/components/button'
+import LinkButton from '@/components/link-button'
 import { useLocation, useLocationDispatch } from '@/context/LocationContext'
 
 export default function DisplayLocationScreen() {
@@ -13,9 +13,9 @@ export default function DisplayLocationScreen() {
         Location is {location?.coords.latitude} / {location?.coords.longitude}
       </Text>
 
-      <Button href="/" onPress={reset}>
+      <LinkButton href="/" onPress={reset}>
         Reset
-      </Button>
+      </LinkButton>
     </View>
   )
 }
