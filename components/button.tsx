@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#EEEEEE',
+    color: '#EEEEEC',
   },
   disabledText: {
     color: '#63635E',

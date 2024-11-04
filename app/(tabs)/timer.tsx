@@ -1,3 +1,5 @@
+import Ionicons from '@expo/vector-icons/Ionicons'
+import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { useEffect, useState } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import { useSharedValue, withTiming } from 'react-native-reanimated'
@@ -65,6 +67,9 @@ export default function Timer() {
     }
   }
 
+  const toggleDisabled = countdown === 0
+  const resetDisabled = countdown === durationNumber
+
   return (
     <View style={styles.layout}>
       <TextInput
@@ -80,12 +85,23 @@ export default function Timer() {
       <CircularProgress {...{ progress }} />
 
       <View style={styles.directionRow}>
-        <ButtonCircle onPress={onToggle} disabled={countdown === 0}>
-          {isPaused ? 'Start' : 'Pause'}
+        <ButtonCircle onPress={onToggle} disabled={toggleDisabled}>
+          <Ionicons
+            name={isPaused ? 'play' : 'pause'}
+            size={50}
+            style={[styles.icon, toggleDisabled && styles.iconDisabled]}
+          />
         </ButtonCircle>
-        <ButtonCircle onPress={onReset} disabled={countdown === durationNumber}>
-          Reset
-        </ButtonCircle>
+
+        <View style={styles.resetIcon}>
+          <ButtonCircle onPress={onReset} disabled={resetDisabled}>
+            <MaterialIcons
+              name="refresh"
+              size={60}
+              style={[styles.icon, resetDisabled && styles.iconDisabled]}
+            />
+          </ButtonCircle>
+        </View>
       </View>
     </View>
   )
@@ -97,7 +113,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'red',
   },
   input: {
     fontSize: 16,
@@ -116,5 +131,14 @@ const styles = StyleSheet.create({
   directionRow: {
     flexDirection: 'row',
     gap: 20,
+  },
+  icon: {
+    color: '#EEEEEC',
+  },
+  iconDisabled: {
+    color: '#63635E',
+  },
+  resetIcon: {
+    transform: [{ rotate: '45deg' }, { scaleX: -1 }],
   },
 })
