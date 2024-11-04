@@ -1,13 +1,22 @@
+import { Redirect } from 'expo-router'
 import { StyleSheet, Text, View } from 'react-native'
 
 import LinkButton from '@/components/link-button'
-import Timer from '@/components/animations/timer'
 import { useLocation } from '@/context/LocationContext'
 
 export default function Home() {
-  // const { error } = useLocation()
+  const { error } = useLocation()
 
-  return <Timer />
+  // TODO debug code
+  // return <Redirect href="/timer" />
+
+  return (
+    <View style={styles.layout}>
+      <LinkButton href="/find-location">Find Location</LinkButton>
+
+      {error && <Text style={styles.errorText}>{error}</Text>}
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({

@@ -1,27 +1,47 @@
 import { type ReactNode } from 'react'
-import { Pressable, type PressableProps, StyleSheet, Text } from 'react-native'
+import {
+  Pressable,
+  type PressableProps,
+  StyleProp,
+  StyleSheet,
+  Text,
+  ViewStyle,
+} from 'react-native'
 
-interface Props extends Omit<PressableProps, 'children'> {
+interface Props extends Omit<PressableProps, 'children' | 'style'> {
+  style?: StyleProp<ViewStyle>
   children: ReactNode
 }
 
-export default function Button({ children, ...rest }: Props) {
+export default function Button({ style, disabled, children, ...rest }: Props) {
   return (
-    <Pressable style={styles.button} {...rest}>
-      <Text style={styles.buttonText}>{children}</Text>
+    <Pressable
+      {...rest}
+      {...{ disabled }}
+      style={[style ?? styles.button, disabled && styles.disabled]}
+    >
+      <Text style={[styles.buttonText, disabled && styles.disabledText]}>
+        {children}
+      </Text>
     </Pressable>
   )
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#0D74CE',
+    backgroundColor: '#00749E',
     padding: 15,
     borderRadius: 10,
+  },
+  disabled: {
+    backgroundColor: '#E2E1DE',
   },
   buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#EEEEEE',
+  },
+  disabledText: {
+    color: '#63635E',
   },
 })

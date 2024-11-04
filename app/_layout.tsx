@@ -4,7 +4,6 @@ import { useFonts } from 'expo-font'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
-import Timer from '@/components/animations/timer';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -24,8 +23,12 @@ export default function RootLayout() {
     return null
   }
 
-  return true ? <Timer /> : (
-    <Stack>
+  return (
+    <Stack
+      screenOptions={{
+        contentStyle: { backgroundColor: '#2A7E3B' },
+      }}
+    >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
     </Stack>

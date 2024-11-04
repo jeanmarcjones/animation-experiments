@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router'
 
+import { StyleGuide } from '@/components/style-guide'
 import { LocationProvider } from '@/context/LocationContext'
 
 export default function LocationLayout() {
@@ -8,6 +9,7 @@ export default function LocationLayout() {
       <Stack
         screenOptions={{
           headerShown: false,
+          contentStyle: { backgroundColor: StyleGuide.palette.background },
         }}
       />
     </LocationProvider>
