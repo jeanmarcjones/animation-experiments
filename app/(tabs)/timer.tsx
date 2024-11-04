@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import {
   cancelAnimation,
@@ -10,47 +10,19 @@ import {
 
 import CircularProgress from '@/components/animations/circular-progress'
 import ButtonCircle from '@/components/button-circle'
-
-const INITIAL_DURATION = 1000
-
-export const useCountdown = () => {
-  const [countdown, setCountdown] = useState(INITIAL_DURATION)
-  const [isPaused, setIsPaused] = useState<boolean>(true)
-
-  useEffect(() => {
-    if (countdown === 0 || isPaused) return
-
-    const interval = setInterval(() => {
-      setCountdown((prevCountdown) => prevCountdown - 100)
-    }, 100)
-
-    return () => clearInterval(interval)
-  }, [countdown, isPaused])
-
-  const toggle = () => setIsPaused((prevIsPaused) => !prevIsPaused)
-  const reset = (countdown?: string) =>
-    setCountdown(Number(countdown) ?? INITIAL_DURATION)
-
-  return {
-    countdown,
-    setCountdown,
-    toggle,
-    isPaused,
-    reset,
-  }
-}
+import { useCountdown } from '@/hooks/useCountdown';
 
 export default function Timer() {
   const { countdown, setCountdown, isPaused, toggle, reset } = useCountdown()
-  const [duration, setDuration] = useState(countdown.toString())
+
+  const [countdownDuration, setCountdownDuration] = useState(countdown.toString())
+  const parsedCountdownDuration = Number(countdownDuration)
 
   const progress = useSharedValue(0)
 
-  const durationNumber = Number(duration)
-
   const onToggle = () => {
     if (isPaused) {
-      progress.value = withTiming(1, { duration: durationNumber })
+      progress.value = withTiming(1, { duration: parsedCountdownDuration })
     } else {
       cancelAnimation(progress)
     }
@@ -64,27 +36,27 @@ export default function Timer() {
     }
 
     progress.value = 0
-    reset(duration)
+    reset(countdownDuration)
   }
 
   const onChangeText = (text: string) => {
-    const num = Number(text)
+    const parsedText = Number(text)
 
-    if (!isNaN(num)) {
-      setCountdown(num)
-      setDuration(text)
+    if (!isNaN(parsedText)) {
+      setCountdown(parsedText)
+      setCountdownDuration(text)
     }
   }
 
   const toggleDisabled = countdown === 0
-  const resetDisabled = countdown === durationNumber
+  const resetDisabled = countdown === parsedCountdownDuration
 
   return (
     <View style={styles.layout}>
       <TextInput
         style={styles.input}
         inputMode="numeric"
-        value={duration}
+        value={countdownDuration}
         onChangeText={onChangeText}
         editable={isPaused}
       />
