@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "where-am-i",
-    "slug": "where-am-i",
+    "name": "animation-experiments",
+    "slug": "animation-experiments",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -14,7 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.where-am-i"
+      "bundleIdentifier": "com.anonymous.animation-experiments"
     },
     "android": {
       "adaptiveIcon": {
