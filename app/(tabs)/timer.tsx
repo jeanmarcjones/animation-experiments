@@ -2,7 +2,11 @@ import Ionicons from '@expo/vector-icons/Ionicons'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { useEffect, useState } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
-import { useSharedValue, withTiming } from 'react-native-reanimated'
+import {
+  cancelAnimation,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated'
 
 import CircularProgress from '@/components/animations/circular-progress'
 import ButtonCircle from '@/components/button-circle'
@@ -45,7 +49,12 @@ export default function Timer() {
   const durationNumber = Number(duration)
 
   const onToggle = () => {
-    progress.value = withTiming(1, { duration: durationNumber })
+    if (isPaused) {
+      progress.value = withTiming(1, { duration: durationNumber })
+    } else {
+      cancelAnimation(progress)
+    }
+
     toggle()
   }
 
