@@ -1,10 +1,11 @@
-import { type ReactNode } from 'react'
+import { forwardRef, type ReactNode } from 'react'
 import {
   Pressable,
   type PressableProps,
   StyleProp,
   StyleSheet,
   Text,
+  View,
   ViewStyle,
 } from 'react-native'
 
@@ -13,19 +14,23 @@ interface Props extends Omit<PressableProps, 'children' | 'style'> {
   children: ReactNode
 }
 
-export default function Button({ style, disabled, children, ...rest }: Props) {
-  return (
-    <Pressable
-      {...rest}
-      {...{ disabled }}
-      style={[style ?? styles.button, disabled && styles.disabled]}
-    >
-      <Text style={[styles.buttonText, disabled && styles.disabledText]}>
-        {children}
-      </Text>
-    </Pressable>
-  )
-}
+const Button = forwardRef<View, Props>(
+  ({ style, disabled, children, ...rest }: Props, ref) => {
+    return (
+      <Pressable
+        {...rest}
+        {...{ disabled }}
+        ref={ref}
+        style={[style ?? styles.button, disabled && styles.disabled]}
+      >
+        <Text style={[styles.buttonText, disabled && styles.disabledText]}>
+          {children}
+        </Text>
+      </Pressable>
+    )
+  }
+)
+Button.displayName = 'Button'
 
 export const styles = StyleSheet.create({
   button: {
@@ -45,3 +50,5 @@ export const styles = StyleSheet.create({
     color: '#63635E',
   },
 })
+
+export default Button

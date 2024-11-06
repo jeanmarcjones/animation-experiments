@@ -1275,7 +1275,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNReanimated (3.16.0):
+  - RNReanimated (3.16.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1295,10 +1295,10 @@ PODS:
     - React-utils
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated (= 3.16.0)
-    - RNReanimated/worklets (= 3.16.0)
+    - RNReanimated/reanimated (= 3.16.1)
+    - RNReanimated/worklets (= 3.16.1)
     - Yoga
-  - RNReanimated/reanimated (3.16.0):
+  - RNReanimated/reanimated (3.16.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1318,9 +1318,9 @@ PODS:
     - React-utils
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - RNReanimated/reanimated/apple (= 3.16.0)
+    - RNReanimated/reanimated/apple (= 3.16.1)
     - Yoga
-  - RNReanimated/reanimated/apple (3.16.0):
+  - RNReanimated/reanimated/apple (3.16.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1341,7 +1341,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNReanimated/worklets (3.16.0):
+  - RNReanimated/worklets (3.16.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1680,7 +1680,7 @@ SPEC CHECKSUMS:
   React-utils: f242eb7e7889419d979ca0e1c02ccc0ea6e43b29
   ReactCommon: f7da14a8827b72704169a48c929bcde802698361
   RNGestureHandler: 2282cfbcf86c360d29f44ace393203afd5c6cff7
-  RNReanimated: 743b32a95bd88cb9a8b9ed897ec6c97074dd377b
+  RNReanimated: af4e059a8fd0fb7a9cdf5ad35ead4699598a9447
   RNScreens: b32a9ff15bea7fcdbe5dff6477bc503f792b1208
   SocketRocket: abac6f5de4d4d62d24e11868d7a2f427e0ef940d
   Yoga: 950bbfd7e6f04790fdb51149ed51df41f329fcc8

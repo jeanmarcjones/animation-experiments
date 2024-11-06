@@ -1,5 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
+import { Link } from 'expo-router'
 import { useState } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import {
@@ -10,12 +11,15 @@ import {
 
 import CircularProgress from '@/components/animations/circular-progress'
 import ButtonCircle from '@/components/button-circle'
-import { useCountdown } from '@/hooks/useCountdown';
+import { useCountdown } from '@/hooks/useCountdown'
+import { millisecondsToHhmmss } from '@/utils/time'
 
 export default function Timer() {
   const { countdown, setCountdown, isPaused, toggle, reset } = useCountdown()
 
-  const [countdownDuration, setCountdownDuration] = useState(countdown.toString())
+  const [countdownDuration, setCountdownDuration] = useState(
+    countdown.toString()
+  )
   const parsedCountdownDuration = Number(countdownDuration)
 
   const progress = useSharedValue(0)
@@ -48,8 +52,10 @@ export default function Timer() {
     }
   }
 
-  const toggleDisabled = countdown === 0
-  const resetDisabled = countdown === parsedCountdownDuration
+  const inProgress = countdown === 0
+  const isFinished = countdown === parsedCountdownDuration
+
+  const timeRemaining = millisecondsToHhmmss(countdown)
 
   return (
     <View style={styles.layout}>
@@ -61,25 +67,31 @@ export default function Timer() {
         editable={isPaused}
       />
 
-      <Text style={styles.countdown}>{countdown} ms</Text>
+      <Text style={styles.countdown}>{timeRemaining}</Text>
 
       <CircularProgress {...{ progress }} />
 
       <View style={styles.directionRow}>
-        <ButtonCircle onPress={onToggle} disabled={toggleDisabled}>
+        <Link href="/set-time" asChild disabled={!isPaused}>
+          <ButtonCircle disabled={!isPaused}>
+            <Ionicons name="add" size={50} />
+          </ButtonCircle>
+        </Link>
+
+        <ButtonCircle onPress={onToggle} disabled={inProgress}>
           <Ionicons
             name={isPaused ? 'play' : 'pause'}
             size={50}
-            style={[styles.icon, toggleDisabled && styles.iconDisabled]}
+            style={[styles.icon, inProgress && styles.iconDisabled]}
           />
         </ButtonCircle>
 
         <View style={styles.resetIcon}>
-          <ButtonCircle onPress={onReset} disabled={resetDisabled}>
+          <ButtonCircle onPress={onReset} disabled={isFinished}>
             <MaterialIcons
               name="refresh"
               size={60}
-              style={[styles.icon, resetDisabled && styles.iconDisabled]}
+              style={[styles.icon, isFinished && styles.iconDisabled]}
             />
           </ButtonCircle>
         </View>

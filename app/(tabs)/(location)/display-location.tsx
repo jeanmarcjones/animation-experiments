@@ -1,6 +1,7 @@
+import { Link } from 'expo-router'
 import { StyleSheet, Text, View } from 'react-native'
 
-import LinkButton from '@/components/link-button'
+import Button from '@/components/button'
 import { useLocation, useLocationDispatch } from '@/context/LocationContext'
 
 export default function DisplayLocationScreen() {
@@ -13,9 +14,9 @@ export default function DisplayLocationScreen() {
         Location is {location?.coords.latitude} / {location?.coords.longitude}
       </Text>
 
-      <LinkButton href="/" onPress={reset}>
-        Reset
-      </LinkButton>
+      <Link href="/" asChild onPress={reset}>
+        <Button>Reset</Button>
+      </Link>
     </View>
   )
 }

@@ -1,5 +1,5 @@
-import { type ReactNode } from 'react'
-import { type PressableProps, StyleSheet } from 'react-native'
+import { forwardRef, type ReactNode } from 'react'
+import { type PressableProps, StyleSheet, View } from 'react-native'
 
 import Button, { styles as buttonStyles } from '@/components/button'
 
@@ -7,13 +7,16 @@ interface Props extends Omit<PressableProps, 'children'> {
   children: ReactNode
 }
 
-export default function ButtonCircle({ children, ...rest }: Props) {
-  return (
-    <Button {...rest} style={button}>
-      {children}
-    </Button>
-  )
-}
+const ButtonCircle = forwardRef<View, Props>(
+  ({ children, ...rest }: Props, ref) => {
+    return (
+      <Button {...rest} ref={ref} style={button}>
+        {children}
+      </Button>
+    )
+  }
+)
+ButtonCircle.displayName = 'ButtonCircle'
 
 const styles = StyleSheet.create({
   button: {
@@ -27,3 +30,5 @@ const styles = StyleSheet.create({
 })
 
 const button = StyleSheet.flatten([buttonStyles.button, styles.button])
+
+export default ButtonCircle
