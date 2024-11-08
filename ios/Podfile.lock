@@ -1002,7 +1002,7 @@ PODS:
     - React-debug
   - react-native-safe-area-context (4.10.5):
     - React-Core
-  - react-native-skia (1.2.3):
+  - react-native-skia (1.5.3):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1655,7 +1655,7 @@ SPEC CHECKSUMS:
   React-logger: 257858bd55f3a4e1bc0cf07ddc8fb9faba6f8c7c
   React-Mapbuffer: 6c1cacdbf40b531f549eba249e531a7d0bfd8e7f
   react-native-safe-area-context: a240ad4b683349e48b1d51fed1611138d1bdad97
-  react-native-skia: 80282ed176572d97f6abe128ddcb567e0c33fe93
+  react-native-skia: 655f52187b63c28bd17da6f19da25a7017dc0cab
   React-nativeconfig: ba9a2e54e2f0882cf7882698825052793ed4c851
   React-NativeModulesApple: 8d11ff8955181540585c944cf48e9e7236952697
   React-perflogger: ed4e0c65781521e0424f2e5e40b40cc7879d737e
