@@ -2,11 +2,11 @@ import { forwardRef, type ReactNode } from 'react'
 import {
   Pressable,
   type PressableProps,
-  StyleProp,
+  type StyleProp,
   StyleSheet,
   Text,
   View,
-  ViewStyle,
+  type ViewStyle,
 } from 'react-native'
 
 interface Props extends Omit<PressableProps, 'children' | 'style'> {

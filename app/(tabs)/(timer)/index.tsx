@@ -86,15 +86,13 @@ export default function Timer() {
           />
         </ButtonCircle>
 
-        <View style={styles.resetIcon}>
-          <ButtonCircle onPress={onReset} disabled={isFinished}>
+        <ButtonCircle onPress={onReset} disabled={isFinished}>
             <MaterialIcons
               name="refresh"
               size={60}
               style={[styles.icon, isFinished && styles.iconDisabled]}
             />
-          </ButtonCircle>
-        </View>
+        </ButtonCircle>
       </View>
     </View>
   )
@@ -130,8 +128,5 @@ const styles = StyleSheet.create({
   },
   iconDisabled: {
     color: '#63635E',
-  },
-  resetIcon: {
-    transform: [{ rotate: '45deg' }, { scaleX: -1 }],
-  },
+  }
 })
