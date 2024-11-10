@@ -2,7 +2,7 @@ import { type LocationObject } from 'expo-location'
 import {
   createContext,
   type Dispatch,
-  type ReactNode,
+  type PropsWithChildren,
   useContext,
   useReducer,
 } from 'react'
@@ -26,7 +26,7 @@ type Actions =
 const LocationContext = createContext<LocationState | null>(null)
 const LocationDispatchContext = createContext<Dispatch<Actions> | null>(null)
 
-export function LocationProvider({ children }: { children: ReactNode }) {
+export function LocationProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(locationReducer, initialSate)
 
   return (
@@ -41,7 +41,7 @@ export function LocationProvider({ children }: { children: ReactNode }) {
 export function useLocation() {
   const context = useContext(LocationContext)
   if (!context) {
-    throw new Error(`useLocation must be used within a CountProvider`)
+    throw new Error(`useLocation must be used within a LocationProvider`)
   }
   return context
 }
@@ -49,7 +49,7 @@ export function useLocation() {
 export function useLocationDispatch() {
   const dispatch = useContext(LocationDispatchContext)
   if (!dispatch) {
-    throw new Error(`useLocation must be used within a CountProvider`)
+    throw new Error(`useLocationDispatch must be used within a LocationProvider`)
   }
 
   const success = (location: LocationObject) =>

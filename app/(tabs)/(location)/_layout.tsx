@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router'
 
 import { StyleGuide } from '@/components/style-guide'
-import { LocationProvider } from '@/context/LocationContext'
+import { LocationProvider } from '@/context/location-context'
 
 export default function LocationLayout() {
   return (

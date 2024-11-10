@@ -14,7 +14,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
-import { useLocationDispatch } from '@/context/LocationContext'
+import { useLocationDispatch } from '@/context/location-context'
 import { useMount } from '@/hooks/useMount'
 
 function sleep(ms: number) {

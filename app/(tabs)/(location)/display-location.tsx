@@ -2,7 +2,7 @@ import { Link } from 'expo-router'
 import { StyleSheet, Text, View } from 'react-native'
 
 import Button from '@/components/button'
-import { useLocation, useLocationDispatch } from '@/context/LocationContext'
+import { useLocation, useLocationDispatch } from '@/context/location-context'
 
 export default function DisplayLocationScreen() {
   const { location } = useLocation()

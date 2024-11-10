@@ -2,7 +2,7 @@ import { Link, Redirect } from 'expo-router'
 import { StyleSheet, Text, View } from 'react-native'
 
 import Button from '@/components/button'
-import { useLocation } from '@/context/LocationContext'
+import { useLocation } from '@/context/location-context'
 
 export default function Home() {
   const { error } = useLocation()
