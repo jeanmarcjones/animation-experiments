@@ -1,4 +1,4 @@
-import { forwardRef, type ReactNode } from 'react'
+import { forwardRef, type PropsWithChildren } from 'react'
 import {
   Pressable,
   type PressableProps,
@@ -9,19 +9,29 @@ import {
   type ViewStyle,
 } from 'react-native'
 
-interface Props extends Omit<PressableProps, 'children' | 'style'> {
+import { StyleGuide } from '@/components/style-guide'
+
+type Variant = 'primary' | 'success' | 'danger'
+
+export interface Props extends PropsWithChildren<PressableProps> {
+  variant?: Variant
   style?: StyleProp<ViewStyle>
-  children: ReactNode
 }
 
 const Button = forwardRef<View, Props>(
-  ({ style, disabled, children, ...rest }: Props, ref) => {
+  ({ variant = 'primary', style, disabled, children, ...rest }: Props, ref) => {
+    const backgroundColor = tmp(variant)
+
     return (
       <Pressable
         {...rest}
         {...{ disabled }}
         ref={ref}
-        style={[style ?? styles.button, disabled && styles.disabled]}
+        style={[
+          style ?? styles.button,
+          { backgroundColor },
+          disabled && styles.disabled,
+        ]}
       >
         <Text style={[styles.buttonText, disabled && styles.disabledText]}>
           {children}
@@ -34,7 +44,6 @@ Button.displayName = 'Button'
 
 export const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#00749E',
     padding: 15,
     borderRadius: 10,
   },
@@ -50,5 +59,20 @@ export const styles = StyleSheet.create({
     color: '#63635E',
   },
 })
+
+const tmp = (variant: Variant) => {
+  switch (variant) {
+    case 'primary':
+    default: {
+      return StyleGuide.palette.primary
+    }
+    case 'success': {
+      return StyleGuide.palette.success
+    }
+    case 'danger': {
+      return StyleGuide.palette.danger
+    }
+  }
+}
 
 export default Button

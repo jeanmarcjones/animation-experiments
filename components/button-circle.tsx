@@ -1,9 +1,5 @@
-import { forwardRef, type ReactNode } from 'react'
-import {
-  type PressableProps,
-  StyleSheet,
-  View,
-} from 'react-native'
+import { forwardRef } from 'react'
+import { StyleSheet, View } from 'react-native'
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -11,18 +7,17 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 
-import Button, { styles as buttonStyles } from '@/components/button'
+import Button, {
+  type Props as ButtonProps,
+  styles as buttonStyles,
+} from '@/components/button'
 
 const duration = 500
 
 const AnimatedButton = Animated.createAnimatedComponent(Button)
 
-interface Props extends Omit<PressableProps, 'children'> {
-  children: ReactNode
-}
-
-const ButtonCircle = forwardRef<View, Props>(
-  ({ children, ...rest }: Props, ref) => {
+const ButtonCircle = forwardRef<View, ButtonProps>(
+  ({ children, ...rest }: ButtonProps, ref) => {
     const sv = useSharedValue(40)
 
     const animatedStyles = useAnimatedStyle(() => {
