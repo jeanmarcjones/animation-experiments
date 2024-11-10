@@ -14,13 +14,16 @@ export const useCountdown = (duration = 1000) => {
     return () => clearInterval(interval)
   }, [countdown, isPaused])
 
+  useEffect(() => {
+    setCountdown(duration)
+  }, [duration])
+
   const toggle = () => setIsPaused((prevIsPaused) => !prevIsPaused)
   const reset = (countdown?: string) =>
     setCountdown(Number(countdown) ?? duration)
 
   return {
     countdown,
-    setCountdown,
     toggle,
     isPaused,
     reset,

@@ -49,7 +49,9 @@ export function useLocation() {
 export function useLocationDispatch() {
   const dispatch = useContext(LocationDispatchContext)
   if (!dispatch) {
-    throw new Error(`useLocationDispatch must be used within a LocationProvider`)
+    throw new Error(
+      `useLocationDispatch must be used within a LocationProvider`
+    )
   }
 
   const success = (location: LocationObject) =>

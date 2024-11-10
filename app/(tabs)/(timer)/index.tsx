@@ -1,8 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons'
 import { Link } from 'expo-router'
-import { useState } from 'react'
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import {
   cancelAnimation,
   useSharedValue,
@@ -11,22 +10,24 @@ import {
 
 import CircularProgress from '@/components/animations/circular-progress'
 import ButtonCircle from '@/components/button-circle'
+import { useTimer } from '@/context/timer-context'
 import { useCountdown } from '@/hooks/useCountdown'
-import { millisecondsToHhmmss } from '@/utils/time'
+import { hhmmssToMilliseconds, millisecondsToHhmmss } from '@/utils/time'
+
+// TODO move some logic from useCountdown and set-time into a state reducer
+// TODO integration tests
 
 export default function Timer() {
-  const { countdown, setCountdown, isPaused, toggle, reset } = useCountdown()
+  const duration = useTimer()
+  const parsedDuration = hhmmssToMilliseconds(duration)
 
-  const [countdownDuration, setCountdownDuration] = useState(
-    countdown.toString()
-  )
-  const parsedCountdownDuration = Number(countdownDuration)
+  const { countdown, isPaused, toggle, reset } = useCountdown(parsedDuration)
 
   const progress = useSharedValue(0)
 
   const onToggle = () => {
     if (isPaused) {
-      progress.value = withTiming(1, { duration: parsedCountdownDuration })
+      progress.value = withTiming(1, { duration: parsedDuration })
     } else {
       cancelAnimation(progress)
     }
@@ -40,32 +41,17 @@ export default function Timer() {
     }
 
     progress.value = 0
-    reset(countdownDuration)
-  }
-
-  const onChangeText = (text: string) => {
-    const parsedText = Number(text)
-
-    if (!isNaN(parsedText)) {
-      setCountdown(parsedText)
-      setCountdownDuration(text)
-    }
+    reset(duration)
   }
 
   const inProgress = countdown === 0
-  const isFinished = countdown === parsedCountdownDuration
+  const isFinished = countdown === parsedDuration
 
   const timeRemaining = millisecondsToHhmmss(countdown)
 
   return (
     <View style={styles.layout}>
-      <TextInput
-        style={styles.input}
-        inputMode="numeric"
-        value={countdownDuration}
-        onChangeText={onChangeText}
-        editable={isPaused}
-      />
+      <Text style={styles.input}>{duration}</Text>
 
       <Text style={styles.countdown}>{timeRemaining}</Text>
 
@@ -87,11 +73,11 @@ export default function Timer() {
         </ButtonCircle>
 
         <ButtonCircle onPress={onReset} disabled={isFinished}>
-            <MaterialIcons
-              name="refresh"
-              size={60}
-              style={[styles.icon, isFinished && styles.iconDisabled]}
-            />
+          <MaterialIcons
+            name="refresh"
+            size={60}
+            style={[styles.icon, isFinished && styles.iconDisabled]}
+          />
         </ButtonCircle>
       </View>
     </View>
@@ -128,5 +114,5 @@ const styles = StyleSheet.create({
   },
   iconDisabled: {
     color: '#63635E',
-  }
+  },
 })

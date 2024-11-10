@@ -1,8 +1,7 @@
 // TODO docs
-const parseMilliseconds = (milliseconds: number): string =>
-  milliseconds.toString().padStart(2, '0')
+const padTime = (time: number): string => time.toString().padStart(2, '0')
 
-// TODO test + docs
+// TODO docs
 function millisecondsToHhmmss(milliseconds: number): string {
   const seconds = Math.floor(milliseconds / 1000)
 
@@ -10,7 +9,23 @@ function millisecondsToHhmmss(milliseconds: number): string {
   const minutes = Math.floor((seconds % 3600) / 60)
   const secondsRemaining = seconds % 60
 
-  return `${parseMilliseconds(hours)}:${parseMilliseconds(minutes)}:${parseMilliseconds(secondsRemaining)}`
+  return `${padTime(hours)}:${padTime(minutes)}:${padTime(secondsRemaining)}`
+}
+
+// TODO docs
+// TODO handle malformed?
+function hhmmssToMilliseconds(hhmmss: string): number {
+  const formattedHhssmm = hhmmss.replaceAll(':', '')
+
+  const hh = formattedHhssmm.slice(0, 2)
+  const mm = formattedHhssmm.slice(2, 4)
+  const ss = formattedHhssmm.slice(4, 8)
+
+  const seconds = Number(ss) * 1_000
+  const minutes = Number(mm) * 60_000
+  const hours = Number(hh) * 3_600_000
+
+  return seconds + minutes + hours
 }
 
 // TODO test + docs
@@ -28,4 +43,4 @@ function parseHhmmss(value: string): string {
   }, '')
 }
 
-export { millisecondsToHhmmss, parseHhmmss }
+export { hhmmssToMilliseconds, millisecondsToHhmmss, parseHhmmss }
