@@ -8,7 +8,7 @@ export default function Home() {
   const { error } = useLocation()
 
   // TODO debug code
-  // return <Redirect href="/(timer)" />
+  // return <Redirect href="/playground" />
 
   return (
     <View style={styles.layout}>
