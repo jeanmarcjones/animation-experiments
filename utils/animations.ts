@@ -1,7 +1,6 @@
 import {
   type AnimatableValue,
   type Animation,
-  type AnimationObject,
   defineAnimation,
 } from 'react-native-reanimated'
 
@@ -10,62 +9,86 @@ interface TickAnimation extends Animation<TickAnimation> {
   elapsed: number
 }
 
-type withTickType = <T extends AnimatableValue>(
+/**
+ * The tick animation configuration.
+ *
+ * @param interval - The pause between animations (in milliseconds).
+ * Defaults to 1000.
+ * @param increment - The incremental change in radians per animation, calculated as π divided by this value.
+ * Defaults to 10
+ * @param startAngle - The initial angle (in radians).
+ * Defaults to 0.
+ */
+interface TickConfig {
   interval?: number
-  // _nextAnimation: T
-) => number
+  increment?: number
+  startAngle?: number
+}
 
-// TODO docs + investigate testing
-// TODO composable with withRepeat
+type withTickType = (userConfig?: TickConfig) => number
+
+// TODO validate config
+// TODO investigate testing
 // TODO composable with withTiming
-export const withTick = function <T extends AnimationObject>(
-  interval = 1000
-  // _nextAnimation: T | (() => T)
+/**
+ * An animation that mimics the ticking of a clock's hand.
+ *
+ * @param config - The tick animation configuration - {@link TickConfig}.
+ *
+ * @returns An [animation
+ *   object](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/glossary#animation-object)
+ *   which holds the current state of the animation.
+ * */
+export const withTick = function (
+  userConfig?: TickConfig
 ): Animation<TickAnimation> {
   'worklet'
 
   return defineAnimation(0, () => {
     'worklet'
 
-    // const nextAnimation =
-    //   typeof _nextAnimation === 'function' ? _nextAnimation() : _nextAnimation
-
     const test = (animation: TickAnimation, now: number): boolean => {
       const { lastTimestamp } = animation
-
+      const config = {
+        interval: 1000,
+        increment: 10,
+        ...userConfig,
+      }
 
       const deltaTime = Math.min(now - lastTimestamp, 64)
 
       animation.lastTimestamp = now
 
-      if (animation.elapsed < interval) {
+      if (animation.elapsed < config.interval) {
         animation.elapsed += deltaTime
-      } else {
-        animation.current = ((animation.current as number) ?? 0) + Math.PI / 10
-        animation.elapsed = 0
+
+        return false
       }
+      animation.current =
+        ((animation.current as number) ?? 0) + Math.PI / config.increment
+      animation.elapsed = 0
 
-      // const finished = nextAnimation.onFrame(nextAnimation, now)
-
-      return false
+      return true
     }
 
     const onStart = (
-      animation: Animation<any>,
-      value: AnimatableValue,
-      now: number,
-      previousAnimation: Animation<any> | null
+      animation: TickAnimation,
+      value: AnimatableValue
     ): void => {
-      animation.current = value
-      animation.lastTimestamp = 0
-      animation.elapsed = interval - 100
+      const { current } = animation
 
-      // nextAnimation.onStart(nextAnimation, value, now, previousAnimation)
+      const startAngle = userConfig?.startAngle ?? 0
+      const newCurrent = current === 0 ? startAngle : current
+
+      animation.current = (newCurrent as number) + (value as number)
+      animation.lastTimestamp = 0
+      animation.elapsed = 0
     }
 
     return {
       onFrame: test,
       onStart,
+      current: 0,
       lastTimestamp: 0,
       elapsed: 0,
     }
