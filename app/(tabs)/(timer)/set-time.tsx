@@ -9,7 +9,7 @@ import { useTimerDispatch } from '@/context/timer-context'
 import { parseHhmmss } from '@/utils/time'
 
 export default function SetTime() {
-  const setTimer = useTimerDispatch()
+  const { updateDuration } = useTimerDispatch()
 
   const [duration, setDuration] = useState('')
 
@@ -26,7 +26,7 @@ export default function SetTime() {
   const onAppendDoubleNought = () =>
     appendValue(duration.length < 5 ? '00' : '0')
 
-  const onSetDuration = () => setTimer(duration)
+  const onSetDuration = () => updateDuration(duration)
 
   return (
     <View style={styles.layout}>

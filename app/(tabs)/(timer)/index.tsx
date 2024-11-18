@@ -10,23 +10,20 @@ import {
 
 import CircularProgress from '@/components/animations/circular-progress'
 import ButtonCircle from '@/components/button-circle'
-import { useTimer } from '@/context/timer-context'
 import { useCountdown } from '@/hooks/useCountdown'
 import { hhmmssToMilliseconds, millisecondsToHhmmss } from '@/utils/time'
 
-// TODO move some logic from useCountdown and set-time into a state reducer
 // TODO integration tests
 
 export default function Timer() {
-  const duration = useTimer()
-  const parsedDuration = hhmmssToMilliseconds(duration)
+  const { duration, countdown, paused, toggle, reset } = useCountdown()
 
-  const { countdown, isPaused, toggle, reset } = useCountdown(parsedDuration)
+  const parsedDuration = hhmmssToMilliseconds(duration)
 
   const progress = useSharedValue(0)
 
   const onToggle = () => {
-    if (isPaused) {
+    if (paused) {
       progress.value = withTiming(1, { duration: parsedDuration })
     } else {
       cancelAnimation(progress)
@@ -36,12 +33,12 @@ export default function Timer() {
   }
 
   const onReset = () => {
-    if (!isPaused) {
+    if (!paused) {
       toggle()
     }
 
     progress.value = 0
-    reset(duration)
+    reset()
   }
 
   const inProgress = countdown === 0
@@ -58,15 +55,15 @@ export default function Timer() {
       <CircularProgress {...{ progress }} />
 
       <View style={styles.directionRow}>
-        <Link href="/set-time" asChild disabled={!isPaused}>
-          <ButtonCircle disabled={!isPaused}>
+        <Link href="/set-time" asChild disabled={!paused}>
+          <ButtonCircle disabled={!paused}>
             <Ionicons name="add" size={50} />
           </ButtonCircle>
         </Link>
 
         <ButtonCircle onPress={onToggle} disabled={inProgress}>
           <Ionicons
-            name={isPaused ? 'play' : 'pause'}
+            name={paused ? 'play' : 'pause'}
             size={50}
             style={[styles.icon, inProgress && styles.iconDisabled]}
           />

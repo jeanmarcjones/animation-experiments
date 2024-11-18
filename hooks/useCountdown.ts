@@ -1,31 +1,26 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
-export const useCountdown = (duration = 1000) => {
-  const [countdown, setCountdown] = useState(duration)
-  const [isPaused, setIsPaused] = useState<boolean>(true)
+import { useTimer, useTimerDispatch } from '@/context/timer-context'
+
+export const useCountdown = () => {
+  const { duration, countdown, paused } = useTimer()
+  const { advanceCountdown, resetCountdown, togglePause } = useTimerDispatch()
 
   useEffect(() => {
-    if (countdown === 0 || isPaused) return
+    if (countdown === 0 || paused) return
 
     const interval = setInterval(() => {
-      setCountdown((prevCountdown) => prevCountdown - 100)
+      advanceCountdown()
     }, 100)
 
     return () => clearInterval(interval)
-  }, [countdown, isPaused])
-
-  useEffect(() => {
-    setCountdown(duration)
-  }, [duration])
-
-  const toggle = () => setIsPaused((prevIsPaused) => !prevIsPaused)
-  const reset = (countdown?: string) =>
-    setCountdown(Number(countdown) ?? duration)
+  }, [countdown, paused, advanceCountdown])
 
   return {
+    duration,
     countdown,
-    toggle,
-    isPaused,
-    reset,
+    paused,
+    toggle: togglePause,
+    reset: resetCountdown,
   }
 }
