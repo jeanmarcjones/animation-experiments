@@ -48,8 +48,6 @@ export default function Timer() {
 
   return (
     <View style={styles.layout}>
-      <Text style={styles.input}>{duration}</Text>
-
       <Text style={styles.countdown}>{timeRemaining}</Text>
 
       <CircularProgress {...{ progress }} />
@@ -87,15 +85,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  input: {
-    fontSize: 16,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#BCBBB5',
-    borderRadius: 5,
-    minWidth: '20%',
-    textAlign: 'center',
   },
   countdown: {
     position: 'absolute',

@@ -57,5 +57,6 @@ const styles = StyleSheet.create({
   canvas: {
     width: canvasDimension,
     height: canvasDimension,
+    marginTop: strokeWidth * 2
   },
 })
