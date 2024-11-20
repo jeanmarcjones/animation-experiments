@@ -1,5 +1,6 @@
 {
   "expo": {
+    "newArchEnabled": true,
     "name": "animation-experiments",
     "slug": "animation-experiments",
     "version": "1.0.0",
@@ -29,7 +30,6 @@
     },
     "plugins": [
       "expo-router",
-      "expo-build-properties",
       "expo-font"
     ]
   }
