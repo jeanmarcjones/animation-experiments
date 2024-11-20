@@ -48,9 +48,9 @@ export default function Timer() {
 
   return (
     <View style={styles.layout}>
-      <Text style={styles.countdown}>{timeRemaining}</Text>
-
-      <CircularProgress {...{ progress }} />
+      <CircularProgress {...{ progress }}>
+        <Text style={styles.countdown}>{timeRemaining}</Text>
+      </CircularProgress>
 
       <View style={styles.directionRow}>
         <Link href="/set-time" asChild disabled={!paused}>
@@ -100,5 +100,5 @@ const styles = StyleSheet.create({
   },
   iconDisabled: {
     color: '#63635E',
-  },
+  }
 })
