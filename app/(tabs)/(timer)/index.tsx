@@ -13,6 +13,7 @@ import ButtonCircle from '@/components/button-circle'
 import { useCountdown } from '@/hooks/useCountdown'
 import { hhmmssToMilliseconds, millisecondsToHhmmss } from '@/utils/time'
 
+// TODO fix bug with expo router modal introduced with expo SDK 52
 // TODO integration tests
 
 export default function Timer() {
