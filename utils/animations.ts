@@ -1,12 +1,17 @@
 import {
   type AnimatableValue,
   type Animation,
+  type AnimationObject,
   defineAnimation,
 } from 'react-native-reanimated'
 
 interface TickAnimation extends Animation<TickAnimation> {
+  current: AnimatableValue
   lastTimestamp: number
   elapsed: number
+  started: boolean
+  step: number
+  toValue: number
 }
 
 /**
@@ -14,45 +19,58 @@ interface TickAnimation extends Animation<TickAnimation> {
  *
  * @param interval - The pause between animations (in milliseconds).
  * Defaults to 1000.
- * @param increment - The incremental change in radians per animation, calculated as π divided by this value.
- * Defaults to 10
- * @param startAngle - The initial angle (in radians).
- * Defaults to 0.
  */
 interface TickConfig {
   interval?: number
-  increment?: number
-  startAngle?: number
 }
 
-type withTickType = (userConfig?: TickConfig) => number
+type withTickType = <T extends AnimatableValue>(
+  animation: T,
+  userConfig?: TickConfig
+) => T
 
 // TODO validate config
 // TODO investigate testing
-// TODO composable with withTiming
+// TODO use withDelay instead of elapsed?
+// TODO is step needed?
+// TODO startAngle
+
 /**
  * An animation that mimics the ticking of a clock's hand.
  *
  * @param config - The tick animation configuration - {@link TickConfig}.
+ * @param nextAnimation - The animation to tick.
  *
  * @returns An [animation
  *   object](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/glossary#animation-object)
  *   which holds the current state of the animation.
  * */
-export const withTick = function (
+export const withTick = function <T extends AnimationObject>(
+  _nextAnimation: T | (() => T),
   userConfig?: TickConfig
 ): Animation<TickAnimation> {
   'worklet'
 
   return defineAnimation(0, () => {
     'worklet'
+    const config = {
+      interval: 1000,
+      ...userConfig,
+    }
 
-    const test = (animation: TickAnimation, now: number): boolean => {
-      const { lastTimestamp } = animation
-      const config = {
-        interval: 1000,
-        increment: 10,
-        ...userConfig,
+    const nextAnimation =
+      typeof _nextAnimation === 'function' ? _nextAnimation() : _nextAnimation
+
+    const tick = (animation: TickAnimation, now: number): boolean => {
+      const { current, lastTimestamp, started, step, toValue, previousAnimation } =
+        animation
+
+      if (
+        typeof current !== 'number' ||
+        typeof nextAnimation.current !== 'number'
+      ) {
+        console.warn('[withTick] Invalid animation state')
+        return true
       }
 
       const deltaTime = Math.min(now - lastTimestamp, 64)
@@ -64,33 +82,53 @@ export const withTick = function (
 
         return false
       }
-      animation.current =
-        ((animation.current as number) ?? 0) + Math.PI / config.increment
-      animation.elapsed = 0
 
-      return true
+      if (!started) {
+        nextAnimation.onStart(nextAnimation, 0, now, previousAnimation)
+        animation.started = true
+      }
+
+      const startValue = step * toValue
+
+      nextAnimation.onFrame(nextAnimation, now)
+      animation.current = nextAnimation.current + startValue
+
+      const finished =
+        current > startValue &&
+        current === (nextAnimation.current ?? 0) + startValue
+
+      if (finished) {
+        animation.step += 1
+      }
+
+      return finished
     }
 
     const onStart = (
       animation: TickAnimation,
-      value: AnimatableValue
+      value: AnimatableValue,
+      _now: number,
+      previousAnimation: Animation<any> | null
     ): void => {
-      const { current } = animation
+      const { step, toValue } = animation
 
-      const startAngle = userConfig?.startAngle ?? 0
-      const newCurrent = current === 0 ? startAngle : current
-
-      animation.current = (newCurrent as number) + (value as number)
+      animation.current = (value as number) + step * toValue
       animation.lastTimestamp = 0
       animation.elapsed = 0
+      animation.started = false
+      animation.previousAnimation = previousAnimation
     }
 
     return {
-      onFrame: test,
+      onFrame: tick,
       onStart,
       current: 0,
       lastTimestamp: 0,
       elapsed: 0,
+      stared: false,
+      step: 0,
+      toValue: nextAnimation.toValue,
+      previousAnimation: null,
     }
   })
 } as unknown as withTickType

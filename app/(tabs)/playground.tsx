@@ -4,6 +4,7 @@ import {
   useDerivedValue,
   useSharedValue,
   withRepeat,
+  withTiming,
 } from 'react-native-reanimated'
 
 import { useMount } from '@/hooks/useMount'
@@ -25,7 +26,7 @@ export default function PlaygroundScreen() {
   })
 
   useMount(() => {
-    rotate.value = withRepeat(withTick({ startAngle: Math.PI / 4 }), 10, false)
+    rotate.value = withRepeat(withTick(withTiming(Math.PI / 10)), 10, false)
   })
 
   return (
