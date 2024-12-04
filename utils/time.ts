@@ -1,7 +1,19 @@
-// TODO docs
+/**
+ * Pads a single-digit number with a leading zero.
+ *
+ * @param time - The input number to pad (should be between 0 and 59).
+ *
+ * @returns A string representation of the number with leading zero if necessary.
+ */
 const padTime = (time: number): string => time.toString().padStart(2, '0')
 
-// TODO docs
+/**
+ * Converts milliseconds to a formatted time string in the format HH:mm:ss.
+ *
+ * @param milliseconds - The number of milliseconds to convert.
+ *
+ * @returns A formatted time string in the format HH:mm:ss.
+ */
 function millisecondsToHhmmss(milliseconds: number): string {
   const seconds = Math.floor(milliseconds / 1000)
 
@@ -12,8 +24,14 @@ function millisecondsToHhmmss(milliseconds: number): string {
   return `${padTime(hours)}:${padTime(minutes)}:${padTime(secondsRemaining)}`
 }
 
-// TODO docs
 // TODO handle malformed?
+/**
+ * Converts an HH:MM:SS time string to milliseconds.
+ *
+ * @param hhmmss - The time string in HH:MM:SS format.
+ *
+ * @returns The number of milliseconds since midnight.
+ */
 function hhmmssToMilliseconds(hhmmss: string): number {
   const formattedHhssmm = hhmmss.replaceAll(':', '')
 
