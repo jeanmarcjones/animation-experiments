@@ -9,8 +9,9 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
+        sceneStyle: { backgroundColor: StyleGuide.palette.background }
+
       }}
-      sceneContainerStyle={{ backgroundColor: StyleGuide.palette.background }}
     >
       <Tabs.Screen
         name="(location)"
