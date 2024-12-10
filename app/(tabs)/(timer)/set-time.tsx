@@ -45,14 +45,14 @@ export default function SetTime() {
       </NumberPad>
 
       <Row style={styles.row}>
-        <Link href="/" asChild onPress={onReset}>
+        <Link href="/" asChild dismissTo onPress={onReset}>
           <ButtonCircle variant="danger">
             <Ionicons name="trash" size={26} />
           </ButtonCircle>
         </Link>
 
         {duration.length > 0 && (
-          <Link href="/" asChild onPress={onSetDuration}>
+          <Link href="/" asChild dismissTo onPress={onSetDuration}>
             <ButtonCircle variant="success">
               <Ionicons name="checkmark-sharp" size={26} />
             </ButtonCircle>
