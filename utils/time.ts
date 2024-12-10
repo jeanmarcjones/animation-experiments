@@ -46,8 +46,14 @@ function hhmmssToMilliseconds(hhmmss: string): number {
   return seconds + minutes + hours
 }
 
-// TODO test + docs
-function parseHhmmss(value: string): string {
+/**
+ * Formats a time string in HHMMSS format into a readable HH:MM:SS format.
+ *
+ * @param value - The input time string in HHMMSS format.
+
+ * @returns The formatted time string in HH:MM:SS format.
+ */
+function formatHhmmss(value: string): string {
   const parsed = value.padStart(6, '0')
 
   return parsed.split('').reduce((prev, cur, i) => {
@@ -61,4 +67,4 @@ function parseHhmmss(value: string): string {
   }, '')
 }
 
-export { hhmmssToMilliseconds, millisecondsToHhmmss, parseHhmmss }
+export { formatHhmmss, hhmmssToMilliseconds, millisecondsToHhmmss }

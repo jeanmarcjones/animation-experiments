@@ -6,7 +6,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import ButtonCircle from '@/components/button-circle'
 import NumberPad, { Row } from '@/components/number-pad'
 import { useTimerDispatch } from '@/context/timer-context'
-import { parseHhmmss } from '@/utils/time'
+import { formatHhmmss } from '@/utils/time'
 
 export default function SetTime() {
   const { updateDuration } = useTimerDispatch()
@@ -30,7 +30,7 @@ export default function SetTime() {
 
   return (
     <View style={styles.layout}>
-      <Text style={styles.text}>{parseHhmmss(duration)}</Text>
+      <Text style={styles.text}>{formatHhmmss(duration)}</Text>
 
       <NumberPad setValue={appendValue}>
         <Row>
