@@ -23,7 +23,7 @@ export default function Timer() {
 
   const progress = useSharedValue(0)
 
-  const onToggle = () => {
+  const handleToggle = () => {
     if (paused) {
       progress.value = withTiming(1, { duration: parsedDuration })
     } else {
@@ -33,7 +33,7 @@ export default function Timer() {
     toggle()
   }
 
-  const onReset = () => {
+  const handleReset = () => {
     if (!paused) {
       toggle()
     }
@@ -54,13 +54,13 @@ export default function Timer() {
       </CircularProgress>
 
       <View style={styles.directionRow}>
-        <Link href="/set-time" asChild disabled={!paused}>
+        <Link href="/set-time" asChild disabled={!paused} onPress={handleReset}>
           <ButtonCircle disabled={!paused}>
             <Ionicons name="add" size={50} />
           </ButtonCircle>
         </Link>
 
-        <ButtonCircle onPress={onToggle} disabled={inProgress}>
+        <ButtonCircle onPress={handleToggle} disabled={inProgress}>
           <Ionicons
             name={paused ? 'play' : 'pause'}
             size={50}
@@ -68,7 +68,7 @@ export default function Timer() {
           />
         </ButtonCircle>
 
-        <ButtonCircle onPress={onReset} disabled={isFinished}>
+        <ButtonCircle onPress={handleReset} disabled={isFinished}>
           <MaterialIcons
             name="refresh"
             size={60}
